@@ -1,0 +1,197 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+struct node {
+    int cof;
+    int exp;
+    struct node* link;
+};
+
+void sortlist(struct node* head) {
+    struct node *i, *j, *temp1;
+    //int , temp2;
+
+    for (i = head; i != NULL; i = i->link) {
+        for (j = i->link; j != NULL; j = j->link) {
+            if (i->exp < j->exp) {
+                temp1 = i;
+                //temp2 = i->cof;
+                i = j;
+                //i->cof = j->cof;
+                j = temp1;
+                //j->cof = temp2;
+            }
+        }
+    }
+}
+
+struct node* insertEnd(struct node* head, int value1, int value2) {
+    struct node* temp = head;
+
+    while (temp != NULL) {
+        if (temp->exp == value2) {
+            temp->cof += value1; 
+            return head;
+        }
+        temp = temp->link;
+    }
+
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->cof = value1;
+    newNode->exp = value2;
+    newNode->link = NULL;
+
+    if (head == NULL) {
+        return newNode;
+    }
+
+    temp = head;
+    while (temp->link != NULL) {
+        temp = temp->link;
+    }
+    temp->link = newNode;
+
+    return head;
+}
+
+void listprint(struct node *head) {
+    struct node* ptr = head;
+    while (ptr != NULL) {
+        printf(" %dx^%d ", ptr->cof, ptr->exp);
+        ptr = ptr->link;
+        if (ptr != NULL)
+            printf(" + ");
+    }
+}
+
+void print(struct node *head1, struct node *head2) {
+    struct node *ptr1 = head1, *ptr2 = head2;
+
+    printf("\n\nThe addition result is --->\n");
+    while (ptr1 != NULL && ptr2 != NULL) {
+        if (ptr1->exp == ptr2->exp) {
+            printf(" %dx^%d ", ptr1->cof + ptr2->cof, ptr1->exp);
+            ptr1 = ptr1->link;
+            ptr2 = ptr2->link;
+        } else if (ptr1->exp > ptr2->exp) {
+            printf(" %dx^%d ", ptr1->cof, ptr1->exp);
+            ptr1 = ptr1->link;
+        } else {
+            printf(" %dx^%d ", ptr2->cof, ptr2->exp);
+            ptr2 = ptr2->link;
+        }
+        if (ptr1 != NULL || ptr2 != NULL)
+            printf(" + ");
+    }
+
+    while (ptr1 != NULL) {
+        printf(" %dx^%d ", ptr1->cof, ptr1->exp);
+        ptr1 = ptr1->link;
+        if (ptr1 != NULL)
+            printf(" + ");
+    }
+
+    while (ptr2 != NULL) {
+        printf(" %dx^%d ", ptr2->cof, ptr2->exp);
+        ptr2 = ptr2->link;
+        if (ptr2 != NULL)
+            printf(" + ");
+    }
+}
+
+int isValidNumber(char str[]) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (!isdigit(str[i]) && !(i == 0 && str[i] == '-')) {
+            return 0; // invalid
+        }
+    }
+    return 1; // valid
+}
+
+int main() {
+    struct node* head1 = NULL;
+    struct node* head2 = NULL;
+
+    char input[20];
+    int value1, value2;
+
+    printf("Enter the first polynomial equation ------->\n");
+    while (1) {
+        printf("Enter the coefficient (or 'e' to end): ");
+        scanf("%s", input);
+
+        if (input[0] == 'e' || input[0] == 'E') {
+            break;
+        }
+
+        if (!isValidNumber(input)) {
+            printf("Invalid input! Only numbers allowed.\n");
+            continue;
+        }
+
+        value1 = atoi(input);
+        printf("Enter the exponent: ");
+        scanf("%s", input);
+
+        if (!isValidNumber(input)) {
+            printf("Invalid input! Only numbers allowed.\n");
+            continue;
+        }
+
+        value2 = atoi(input);
+        head1 = insertEnd(head1, value1, value2);
+    }
+
+    printf("Enter the second polynomial equation ------->\n");
+    while (1) {
+        printf("Enter the coefficient (or 'e' to end): ");
+        scanf("%s", input);
+
+        if (input[0] == 'e' || input[0] == 'E') {
+            break;
+        }
+
+        if (!isValidNumber(input)) {
+            printf("Invalid input! Only numbers allowed.\n");
+            continue;
+        }
+
+        value1 = atoi(input);
+        printf("Enter the exponent: ");
+        scanf("%s", input);
+
+        if (!isValidNumber(input)) {
+            printf("Invalid input! Only numbers allowed.\n");
+            continue;
+        }
+
+        value2 = atoi(input);
+        head2 = insertEnd(head2, value1, value2);
+    }
+
+    printf("\nFirst polynomial: ");
+    listprint(head1);
+    printf("\nSecond polynomial: ");
+    listprint(head2);
+
+    sortlist(head1);
+    sortlist(head2);
+
+    printf("\n\nAfter sort:\n");
+    printf("First polynomial: ");
+    listprint(head1);
+    printf("\nSecond polynomial: ");
+    listprint(head2);
+
+    if (head1->exp < head2->exp) {
+        struct node* temp = head1;
+        head1 = head2;
+        head2 = temp;
+    }
+
+    print(head1, head2);
+
+    return 0;
+}  
