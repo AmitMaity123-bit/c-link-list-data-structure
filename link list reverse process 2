@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insertEnd(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        return newNode;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+
+    return head;
+}
+
+void printReverse(struct Node* head) {
+    if (head == NULL) {
+        return;
+    }
+    printReverse(head->next);
+    printf("%d ", head->data);
+}
+int main() {
+    struct Node* head = NULL;
+    char input[10];
+
+    printf("Enter numbers for linked list (enter 'e' to stop):\n");
+
+    while (1) {
+        printf("Enter a number (or 'e' to end): ");
+        scanf("%s", input);
+
+        if (input[0] == 'e' || input[0] == 'E') {
+            break;
+        }
+
+        int value = atoi(input);
+        head = insertEnd(head, value);
+    }
+
+    printf("Linked List in Reverse Order:\n");
+    printReverse(head);
+    printf("\n");
+
+    return 0;
+}
