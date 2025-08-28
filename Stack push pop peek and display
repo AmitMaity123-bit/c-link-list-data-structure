@@ -1,0 +1,77 @@
+#include<stdio.h>
+#define max 10
+
+int a[max],top=-1;
+
+void push(int a[], int item)
+{
+	if(top >= max-1){
+		printf("Stack Overflow...");
+	}
+	else{
+		top++;
+		a[top] = item;
+		printf("Pushed  %d into stack sucsesful.",item );
+	}
+}
+
+void pop(int a[]){
+	if(top<0){
+		printf("Stack Underflow...");
+	}
+	else{
+		printf("Popped %d from stack.",a[top--]);
+	}
+}
+
+void peek(int a[]){
+	if(top == -1){
+		printf("Stack is Empty.");
+	}
+	else{
+		printf("The value stored at the top of the stack is : %d",a[top]);
+	}
+}
+
+void display(int a[]){
+	if(top<0){
+		printf("Stack is empty...");
+	}
+	else{
+		printf("Stack element: ");
+		for(int i=0;i<=top;i++){
+			printf("%d  ",a[i]);
+		}
+		printf("\n");
+	}
+}
+
+int main()
+{
+	int ch,item;
+	do{
+		printf("\n*----------MAIN MENU-----------*");
+		printf("\nENTER 1 FOR PUSH");
+		printf("\nENTER 2 FOR POP");
+		printf("\nENTER 3 FOR PEEK");
+		printf("\nENTER 4 FOR DISPLAY");
+		printf("\nENTER 5 FOR EXIT");
+		printf("\nEnter your choice: ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1: printf("Enter the number you want to be pushed on stack : ");
+					scanf("%d",&item);
+					push(a,item);
+				break;
+			case 2: pop(a);
+				break;
+			case 3: peek(a);
+				break;
+			case 4: display(a);
+				break;
+			case 5: return 0;
+			default : printf("Invalid choice ...  \nPlease Enter a valid choice...\n");
+		}
+	}while(ch != 5);
+}
