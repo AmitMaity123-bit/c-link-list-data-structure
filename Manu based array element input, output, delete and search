@@ -1,0 +1,208 @@
+#include <stdio.h>
+
+#define MAX 100
+
+int arr[MAX],n;
+	
+	int inputele()
+	{
+		int element;
+		printf("Enter the element to insert: ");
+        scanf("%d", &element);  
+		return(element); 
+	}
+	
+	int inputsec()
+	{
+		int element;
+		printf("Enter the element for search: ");
+        scanf("%d", &element);  
+		return(element); 
+	}
+	
+	int inputpos(){
+		int position;
+		printf("Enter the position to insert (1 to %d): ", n + 1);
+        scanf("%d", &position);
+        return(position);
+	}
+	
+	void parray(){
+    if(n == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+
+    printf("Array elements are: ");
+    for(int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+	
+	void inputfirst(int element){
+		for(int i = n; i >= 1; i--) {
+        	arr[i] = arr[i - 1];
+        }
+    	arr[0] = element;
+        n++;
+        printf("Element inserted successfully.\n");
+        
+	}
+	
+	void inputlast(int element){
+		arr[n] = element;
+        n++;
+        printf("Element inserted successfully.\n");
+	}
+	
+	void inputany(int element,int position)
+	{
+		if(position < 1 || position > n + 1) {
+            printf("Invalid position!\n");
+        } else {
+                    // Shifting elements to make space for new element
+            for(int i = n; i >= position; i--) {
+                arr[i] = arr[i - 1];
+            }
+            arr[position - 1] = element;
+            n++;
+            printf("Element inserted successfully.\n");
+        }
+	}
+	
+	void deletefirst(){
+		for(int i = 0; i < n - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+        n--;
+        printf("Element deleted successfully.\n");
+	}
+	
+	void deletelast(){
+		n--;
+        printf("Element deleted successfully.\n");
+	}
+	
+	void deleteany(int position){
+		if(position < 1 || position > n) {
+            printf("Invalid position!\n");
+        } else {
+            for(int i = position - 1; i < n - 1; i++) {
+                arr[i] = arr[i + 1];
+            }
+            n--;
+            printf("Element deleted successfully.\n");
+        }
+	}
+	
+	void Searchele(int element){
+    int positions[MAX];
+    int count = 0;
+    // Collect all positions where element is found
+    for(int i = 0; i < n; i++) {
+        if(arr[i] == element) {
+            positions[count++] = i + 1; 
+        }
+    }
+    // Display result
+    if(count == 0) {
+        printf("Element not found in the array.\n");
+    } else {
+        printf("Element found at position ");
+        for(int i = 0; i < count; i++) {
+            if(i == count - 1 && i != 0) {
+                printf("and %d", positions[i]);
+            } else {
+                printf("%d", positions[i]);
+                if(i < count - 2) {
+                    printf(", ");
+                } else if(i == count - 2) {
+                    printf(" ");
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+int main() {
+int choice, element, position,ele,pos;
+
+// Input array size
+printf("Enter how many number of elements in the array: ");
+scanf("%d", &n);
+
+// Input array elements
+printf("Enter the %d elements of the array:\n",n);
+for(int i = 0; i < n; i++) {
+	printf("Enter number %d : ",i+1);
+    scanf("%d", &arr[i]);
+}
+	
+    while(1) {
+        printf("\nMenu:\n");
+        printf("1. Display array\n");
+        printf("2. Insert an element at first position\n");
+        printf("3. Insert an element at last position\n");
+        printf("4. Insert an element at any position\n");
+        printf("5. Delete an element at first position\n");
+        printf("6. Delete an element at last position\n");
+        printf("7. Delete an element at any position\n");
+        printf("8. Search for an element\n");
+        printf("9. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+            	parray();
+                break;
+
+			case 2:
+				ele=inputele();
+				inputfirst(ele);
+				break;
+				
+			case 3:
+				ele=inputele();
+				inputlast(ele);
+				break;
+				
+            case 4:
+            	ele=inputele();
+            	pos=inputpos();
+            	inputany(ele,pos);
+                break;
+
+			case 5:
+				deletefirst();
+				break;
+				
+			case 6:
+				deletelast();
+				break;
+				
+            case 7:
+            	pos=inputpos();
+            	deleteany(pos);
+                break;
+
+            case 8:
+            	ele=inputsec();
+            	Searchele(ele);
+                break;
+
+            case 9:
+                // Exit
+                return 0;
+
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
