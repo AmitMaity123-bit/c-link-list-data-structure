@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+int main() {
+    struct node *start = NULL, *p, *temp;
+    char input[10]; 
+	printf("Enter 'e' or 'E' to stop making nodes------->\n ");
+    while (1) {
+        printf("Enter the data of the node: ");
+        scanf("%s", input);
+
+        if (input[0] == 'e' || input[0] == 'E') {
+            break;
+        }
+
+        p = (struct node*)malloc(sizeof(struct node));
+        if (p == NULL) {
+            printf("Memory allocation failed.\n");
+            return 1;
+        }
+
+        p->data = atoi(input);  // strint to convert int
+        //What is atoi in C?
+		//atoi stands for ASCII to Integer. It's a C standard library function used to convert a string (char array)
+		// that contains numeric characters into an integer.
+        p->next = NULL;
+
+        if (start == NULL) {
+            start = p;
+            temp = p;
+        } else {
+            temp->next = p;
+            temp = p;
+        }
+    }
+
+    printf("\nElements in the linked list are:\n");
+    temp = start;
+    while (temp != NULL) {
+        printf("%d -----> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+
+    return 0;
+}
