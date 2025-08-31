@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+	struct Node* prev;
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node *amit;
+amit head = NULL;
+amit temp = NULL;
+amit newNode = NULL;
+
+void create(int n){
+	int value,i;
+	for (i = 0; i < n; i++) {
+        newNode = (amit)malloc(sizeof(struct Node));
+        if (newNode == NULL) {
+            printf("Memory allocation failed!\n");
+            return ;
+        }
+
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+		
+		newNode->prev = NULL;
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;  // First node
+        } else {
+            temp->next = newNode; // Link previous node to new
+            newNode->prev = temp;
+        }
+        temp = newNode; // Move temp to last node
+    }
+}
+
+void print(){
+	printf("\nLinked List: ");
+    temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void revprint(){
+	printf("Print Reverse List: ");
+	temp = head;
+	while (temp->next != NULL)
+		temp=temp->next;
+	while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->prev;
+    }
+    printf("NULL");
+}
+
+int main() {
+    int n;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    create(n);
+
+    print();
+    revprint();
+
+    return 0;
+}
